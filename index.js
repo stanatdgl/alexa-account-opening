@@ -6,8 +6,7 @@ awsSDK.config.update({
 
 const promisify = require('es6-promisify');
 
-const appId = 'amzn1.ask.skill.acb69831-dfac-46d5-9a9b-fcb100f22fb9'; // fill before deploying 
-
+const appId = 'amzn1.ask.skill.24ce7bd1-8bba-4044-be9c-52f689022022'; 
 const instructions = `Welcome to RBL Bank. <break strength="medium" /> 
                       my name is lucy, a voice assitant, I can help you to create Foundation and Rewards Account`;
 
@@ -50,6 +49,13 @@ const handlers = {
       const slotToElicit = 'DOB';
       const speechOutput = 'What is your date of birth?';
       const repromptSpeech = 'Can you say your date of birth please?';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    }
+
+    if (!slots.ContactNumber.value) {
+      const slotToElicit = 'ContactNumber';
+      const speechOutput = 'What is your contact number?';
+      const repromptSpeech = 'Can you say your contact number please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
