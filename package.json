@@ -17,8 +17,6 @@
   "homepage": "https://github.com/stanatdgl/alexa-account-opening#readme",
   "description": "",
   "dependencies": {
-    "alexa-sdk": "^1.0.25",
-    "aws-sdk": "^2.205.0",
-    "es6-promisify": "^6.0.0"
+    "alexa-sdk": "^1.0.25"    
   }
 }

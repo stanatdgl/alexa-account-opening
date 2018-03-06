@@ -1,13 +1,6 @@
 const alexaSDK = require('alexa-sdk');
-const awsSDK = require('aws-sdk');
-awsSDK.config.update({
-  region: "us-east-1"
-});
-
-const promisify = require('es6-promisify');
-
 const appId = 'amzn1.ask.skill.24ce7bd1-8bba-4044-be9c-52f689022022'; 
-const instructions = `Welcome to RBL Bank. <break strength="medium" /> 
+const instructions = `Welcome to RBS Bank. <break strength="medium" /> 
                       my name is lucy, a voice assitant, I can help you to create Foundation and Rewards Account`;
 
 exports.handler = function(event, context, callback) {
