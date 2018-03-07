@@ -19,68 +19,53 @@ const handlers = {
     this.emit(':ask', instructions);
   },
 
-  'PersonalDetailsIntent'(){
-    console.log('inside personal details intent');
+  'CollectDetailsIntent'(){
+
+    console.log('colloct details intent');
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
 
     if (!slots.FirstName.value) {
       const slotToElicit = 'FirstName';
-      const speechOutput = 'What is your first name?';
+      const speechOutput = 'Please share your first name?';
       const repromptSpeech = 'Can you say your first name please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
     if (!slots.LastName.value) {
       const slotToElicit = 'LastName';
-      const speechOutput = 'What is your last name?';
+      const speechOutput = 'Please share your last name';
       const repromptSpeech = 'Can you say your last name please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
     if (!slots.DOB.value) {
       const slotToElicit = 'DOB';
-      const speechOutput = 'What is your date of birth?';
+      const speechOutput = 'Please share your date of birth';
       const repromptSpeech = 'Can you say your date of birth please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
     if (!slots.ContactNumber.value) {
       const slotToElicit = 'ContactNumber';
-      const speechOutput = 'What is your contact number?';
+      const speechOutput = 'Please share your contact number';
       const repromptSpeech = 'Can you say your contact number please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
-
-  },
-
-  'AddressDetailsIntent'(){
-    console.log('inside address details intent');
-    const { userId } = this.event.session.user;
-    const { slots } = this.event.request.intent;
-
     if (!slots.PostCode.value) {
       const slotToElicit = 'PostCode';
-      const speechOutput = 'What is your postcode?';
+      const speechOutput = 'Please share your postcode number';
       const repromptSpeech = 'Can you say your postcode please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
-  },
-
-  'IdentificationDetailsIntent'(){
-    console.log('inside identification details intent');
-    const { userId } = this.event.session.user;
-    const { slots } = this.event.request.intent;
-
     if (!slots.DrivingLincense.value) {
       const slotToElicit = 'DrivingLincense';
-      const speechOutput = 'What is your driving license number?';
+      const speechOutput = 'Please share your driving license number';
       const repromptSpeech = 'Can you say your driving license number please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    
   },
 
   'Unhandled'() {
