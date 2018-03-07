@@ -1,9 +1,9 @@
 const alexaSDK = require('alexa-sdk');
 const appId = 'amzn1.ask.skill.24ce7bd1-8bba-4044-be9c-52f689022022'; 
-const instructions = `Welcome to RBS Bank. <break strength="medium" /> 
-                      my name is lucy, a voice assitant, I can help you to create Foundation and Rewards Account`;
+const instructions = 'Welcome to RBS Bank. <break strength="medium" /> my name is lucy, a voice assistant. I can help you to create Foundation and Rewards Account';
 
 exports.handler = function(event, context, callback) {
+    console.log("inside handler function");
     var alexa = alexaSDK.handler(event, context);
     alexa.appId = appId;
     alexa.registerHandlers(handlers);
@@ -11,19 +11,18 @@ exports.handler = function(event, context, callback) {
 };
 
 const handlers = {
-
-  /**
-   * Triggered when the user says "Alexa, open RBS account opening.
-   */
+   
   'LaunchRequest'(){
+    console.log("inside launch request");
     this.emit(':ask', instructions);
   },
 
-  'CollectDetailsIntent'(){
+  'CollectDetailsIntent'() {
 
-    console.log('colloct details intent');
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
+
+    console.log("slot value ::" + slots);
 
     if (!slots.FirstName.value) {
       const slotToElicit = 'FirstName';
@@ -66,6 +65,20 @@ const handlers = {
       const repromptSpeech = 'Can you say your driving license number please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
+
+    this.emit(':tell', 'Thanks for sharing your personal details, <break strength="medium" /> please give me a moment..we are processing your application..');
+
+  },
+
+  'ReplayDetailsIntent' (){
+    const speechOutput = `Your first name is {this.slots.FirstName.value} 
+                         <break strength="medium" /> Your last name is {this.slots.LastName.value}, can you confirm your details please? `;
+    this.emit(':tell', speechOutput);
+  },
+
+  'ProvideAccountIntent' (){
+    const speechOutput = 'Fantastic New, We have offered a rewards platinum account and your sort code is 56-00-36 <break strength="medium" /> and your account number is 612323 <break strength="medium" />';
+    this.emit(':tell', speechOutput);
   },
 
   'Unhandled'() {
@@ -74,16 +87,14 @@ const handlers = {
   },
   
   'AMAZON.HelpIntent'() {
-    const speechOutput = instructions;
-    const reprompt = instructions;
-    this.emit(':ask', speechOutput, reprompt);
+    this.emit(':tell', 'These are your personal details that are mandatory to open an account with RBS.');
   },
 
   'AMAZON.CancelIntent'() {
-    this.emit(':tell', 'Goodbye!');
+    this.emit(':tell', 'Thanks for using voice assistance, hopefully you found it very useful. <break strength="medium" /> Goodbye!');
   },
 
   'AMAZON.StopIntent'() {
-    this.emit(':tell', 'Goodbye!');
+    this.emit(':tell', 'Stopping and exiting the application, hopefully you found it very useful.. <break strength="medium" /> Goodbye!');
   }
 };

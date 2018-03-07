@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -f alexa-account-opening.zip && 7z u alexa-account-opening.zip *.* -r && aws lambda update-function-code --function-name alexaAccountOpening --region us-east-1 --zip-file fileb://C:/dev/work/hackathan/alexa-account-opening/alexa-account-opening.zip"
   },
   "repository": {
     "type": "git",
