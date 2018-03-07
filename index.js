@@ -27,7 +27,7 @@ const handlers = {
 
     if (!slots.FirstName.value) {
       const slotToElicit = 'FirstName';
-      const speechOutput = 'Please share your first name?';
+      const speechOutput = 'Please share your first name';
       const repromptSpeech = 'Can you say your first name please?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
