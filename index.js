@@ -48,21 +48,21 @@ const handlers = {
     if (!slots.ContactNumber.value) {
       const slotToElicit = 'ContactNumber';
       const speechOutput = 'Please share your contact number';
-      const repromptSpeech = 'Can you say your contact number please?';
+      const repromptSpeech = 'Sorry, I didnt get that, Could you please share your contact number?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
     if (!slots.PostCode.value) {
       const slotToElicit = 'PostCode';
       const speechOutput = 'Please share your postcode number';
-      const repromptSpeech = 'Can you say your postcode please?';
+      const repromptSpeech = 'Sorry, I didnt get that, Could you please share your postcode?';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
     if (!slots.DrivingLincense.value) {
       const slotToElicit = 'DrivingLincense';
       const speechOutput = 'Please share your driving license number';
-      const repromptSpeech = 'Can you say your driving license number please?';
+      const repromptSpeech = 'Sorry, I didnt get that, Could you please share your driving license number ';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
