@@ -1,9 +1,17 @@
 const alexaSDK = require('alexa-sdk');
 const appId = 'amzn1.ask.skill.24ce7bd1-8bba-4044-be9c-52f689022022'; 
-const instructions = 'Welcome to RBS Bank. <break strength="medium" /> my name is lucy, a voice assistant. I can help you to create Foundation and Rewards Account';
+const instructions = 'Welcome to RBS Bank. <break strength="medium" /> my name is lucy, a voice assistant.'
++ 'I can help you to create Foundation and Rewards Account, <break strength="weak" />' 
++ 'Can I use your amazon account details for this process <break strength="weak" /> or you can share your details';
+
+const accountOpenOutput = 'Fantastic News, We have offered you a rewards platinum account'
++ 'and your sort code is 56-00-36 <break strength="medium" /> and your account number is 612323'
++ '<break strength="medium" /> Thank you for banking with us. You can start using our other digital services ';
+
+const processingOutput = 'Thanks for sharing your details, <break strength="medium" />'
++ 'please give me a moment. I am processing your application. <break strength="strong" />';
 
 exports.handler = function(event, context, callback) {
-    console.log("inside handler function");
     var alexa = alexaSDK.handler(event, context);
     alexa.appId = appId;
     alexa.registerHandlers(handlers);
@@ -13,17 +21,59 @@ exports.handler = function(event, context, callback) {
 const handlers = {
    
   'LaunchRequest'(){
-    console.log("inside launch request");
     this.emit(':ask', instructions);
   },
 
-  'CollectDetailsIntent'() {
+  'UseAmazonDetailsIntent'(){
+    const { userId } = this.event.session.user;
+    const { slots } = this.event.request.intent;
+    const intentObj = this.event.request.intent;
+  
+    if (intentObj.confirmationStatus == undefined ) {
+      const speechOutput = 'Your first name is Stan and last name is prabu, <break strength="medium" />'
+        + 'your post code numbe is S6 7JH and your contact number is 071234567890, are these details correct?';
+      const repromptSpeech = speechOutput;
+      this.emit(':confimIntent', speechOutput, repromptSpeech, intentObj);
+   }else if(intentObj.confirmationStatus == 'DENIED'){
+      const speechOutput = 'No problem at all I will take you through the standard account opening process';
+      this.emit(':tell', speechOutput);
+   }else if(intentObj.confirmationStatus == 'CONFIRMED'){
+    if (!slots.AccountType.value) {
+      const slotToElicit = 'AccountType';
+      const speechOutput = 'What type of account do you want to open today?';
+      const repromptSpeech = 'Can you please tell me what type of account, do you want to open today?';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    }
+    if (!slots.DrivingLincense.value) {
+      const slotToElicit = 'DrivingLincense';
+      const speechOutput = 'We also require your driving license number as well to process your application';
+      const repromptSpeech = 'Sorry, I didnt catch quiet correctly, can you please repeat once again?';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    }
+   }    
+   
+    if (intentObj.confirmationStatus !== 'CONFIRMED') {
+      const speechOutput = 'Your first name is Stan and last name is prabu, <break strength="medium" />' + 
+      'your post code numbe is S6 7JH, your contact number is 071234567890' + 
+      'Your driving lincense number is ' + intentObj.slots.DrivingLincense.value;
+      const repromptSpeech = speechOutput;
+      this.emit(':confirmIntent', speechOutput, repromptSpeech, intentObj);
+    }
+    this.emit(':tell', processingOutput );
+    this.emit(':tell', accountOpenOutput);
+  },
 
+  'CollectDetailsIntent'() {
+    const intentObj = this.event.request.intent;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
 
-    console.log("slot value ::" + slots);
-
+    if (!slots.AccountType.value) {
+      const slotToElicit = 'AccountType';
+      const speechOutput = 'What type of account do you want to open today?';
+      const repromptSpeech = 'Can you please tell me what type of account, do you want to open today?';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    }
     if (!slots.FirstName.value) {
       const slotToElicit = 'FirstName';
       const speechOutput = 'Please share your first name';
@@ -65,20 +115,22 @@ const handlers = {
       const repromptSpeech = 'Sorry, I didnt get that, Could you please share your driving license number ';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
+  
+    if (intentObj.confirmationStatus !== 'CONFIRMED' && intentObj.confirmationStatus !== 'DENIED' ) {
+      const speechOutput = 'Please verify your details before I proceed to process your inputs <break strength="medium" /> ' +
+        'Your first name is ' + intentObj.slots.FirstName.value + 'Your last name is ' + intentObj.slots.LastName.value
+        'Your contact number is ' + intentObj.slots.ContactNumber.value + 'Your post code number is ' + intentObj.slots.PostCode.value+ 
+        'Your driving lincense number is ' + intentObj.slots.DrivingLincense.value, ' are these details correct?';
+      const repromptSpeech = speechOutput;
+      this.emit(':confirmIntent', speechOutput, repromptSpeech, intentObj);
+    }else if(intentObj.confirmationStatus == 'CONFIRMED'){
+      this.emit(':tell', processingOutput );
+      this.emit(':tell', accountOpenOutput);
 
-    this.emit(':tell', 'Thanks for sharing your personal details, <break strength="medium" /> please give me a moment..we are processing your application..');
-
-  },
-
-  'ReplayDetailsIntent' (){
-    const speechOutput = `Your first name is {this.slots.FirstName.value} 
-                         <break strength="medium" /> Your last name is {this.slots.LastName.value}, can you confirm your details please? `;
-    this.emit(':tell', speechOutput);
-  },
-
-  'ProvideAccountIntent' (){
-    const speechOutput = 'Fantastic New, We have offered a rewards platinum account and your sort code is 56-00-36 <break strength="medium" /> and your account number is 612323 <break strength="medium" />';
-    this.emit(':tell', speechOutput);
+    }else if (intentObj.confirmationStatus == 'DENIED'){
+      const speechOutput = 'No problem at all, will take through the process once again';
+      this.emit(':tell', speechOutput);
+    }  
   },
 
   'Unhandled'() {
@@ -91,7 +143,7 @@ const handlers = {
   },
 
   'AMAZON.CancelIntent'() {
-    this.emit(':tell', 'Thanks for using voice assistance, hopefully you found it very useful. <break strength="medium" /> Goodbye!');
+    this.emit(':tell', 'Thanks for using voice assistant, hopefully you found it very helpful. <break strength="medium" /> Goodbye!');
   },
 
   'AMAZON.StopIntent'() {
