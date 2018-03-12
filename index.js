@@ -7,7 +7,7 @@ const instructions = 'Welcome to RBS Bank. <break strength="medium" /> my name i
 const accountOpenOutput = '<say-as interpret-as="interjection">Fantastic News </say-as>,'
 + '<break time="1s"/> We have offered you a rewards platinum account'
 + 'and your sort code is 56-00-36 <break strength="medium" /> and your account number is 612323'
-+ '<break strength="medium" /> Thank you for banking with us. You can start using our other digital services.';
++ '<break strength="medium" /> Thank you for banking with us. You can start using our other digital services. Thank you';
 
 const processingOutput = 'Thanks for sharing your details, <break strength="medium"/>'
 + 'please give me a moment. I am processing your application. <break strength="strong" />';
