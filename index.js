@@ -7,9 +7,9 @@ const instructions = 'Welcome to RBS Bank. <break strength="medium" /> my name i
 const accountOpenOutput = '<say-as interpret-as="interjection">Fantastic News </say-as>,'
 + '<break time="1s"/> We have offered you a rewards platinum account'
 + 'and your sort code is 56-00-36 <break strength="medium" /> and your account number is 612323'
-+ '<break strength="medium" /> Thank you for banking with us. You can start using our other digital services ';
++ '<break strength="medium" /> Thank you for banking with us. You can start using our other digital services.';
 
-const processingOutput = 'Thanks for sharing your details, <break strength="medium" />'
+const processingOutput = 'Thanks for sharing your details, <break strength="medium"/>'
 + 'please give me a moment. I am processing your application. <break strength="strong" />';
 
 exports.handler = function(event, context, callback) {
@@ -30,13 +30,13 @@ const handlers = {
     const { slots } = this.event.request.intent;
     const intentObj = this.event.request.intent;
 
-   if (intentObj.confirmationStatus == undefined ) {
-      const speechOutput = 'Please wait, I am retriving your details <say-as interpret-as="interjection"> Here are your details</say-as> <break time="1s"/> '
+   if (intentObj.confirmationStatus == 'NONE') {
+       const speechOutput = 'Please wait, I am retriving your details <break time="2s"/> Here are your details <break time="1s"/> '
         + 'your first name is Stan and last name is prabu, <break time="1s"/> '
-        + 'your post code numbe is S6 7JH <break time="1s"/> and '
-        + 'your contact number is 071234567890, <break time="1s"/> are these details correct?';
+        + 'your post code number is S6 7JH <break time="2s"/> and '
+        + 'your contact number is 071234567890, <break time="2s"/> are these details correct?';      
       const repromptSpeech = speechOutput;
-      return this.emit(':confimIntent', speechOutput, repromptSpeech, intentObj);
+      return this.emit(':confirmIntent', speechOutput, repromptSpeech, intentObj);
    }else if(intentObj.confirmationStatus == 'DENIED'){
       const speechOutput = 'No problem at all I will take you through the standard account opening process';
       return this.emit(':tell', speechOutput);
@@ -52,13 +52,11 @@ const handlers = {
         const repromptSpeech = 'Sorry, I didnt catch quiet correctly, can you please repeat once again?';
         return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }else {
-      const speechOutput = 'Your first name is Stan and last name is prabu, <break strength="medium"/> ' 
-      + 'your post code numbe is S6 7JH, your contact number is 071234567890 ' 
+      const speechOutput = 'Here are your details, your first name is Stan and last name is prabu, <break strength="medium"/> ' 
+      + 'your post code number is S6 7JH, your contact number is 071234567890, ' 
       + 'Your driving lincense number is ' + slots.DrivingLincense.value;
-      const repromptSpeech = speechOutput;
-      this.emit(':tell', speechOutput);    
-      this.emit(':tell', processingOutput);
-      this.emit(':tell', accountOpenOutput);
+      const overallouput = speechOutput + ' <break time="3s"/> '+ processingOutput + ' <break time="5s"/> ' +accountOpenOutput;
+      return this.emit(':tell', overallouput);
     }
    }
   
@@ -117,7 +115,7 @@ const handlers = {
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
   
-    if (intentObj.confirmationStatus !== 'CONFIRMED' && intentObj.confirmationStatus !== 'DENIED' ) {
+    if (intentObj.confirmationStatus == 'NONE') {
       const speechOutput = 'Please verify your details before I proceed to process your inputs <break strength="medium" /> '
         + 'Your first name is ' + slots.FirstName.value + ' Your last name is ' + slots.LastName.value
         + 'Your contact number is ' + slots.ContactNumber.value + ' Your post code number is ' + slots.PostCode.value 
@@ -125,12 +123,11 @@ const handlers = {
       const repromptSpeech = speechOutput;
       return this.emit(':confirmIntent', speechOutput, repromptSpeech, intentObj);
     }else if(intentObj.confirmationStatus == 'CONFIRMED'){
-      this.emit(':tell', processingOutput);
-      this.emit(':tell', accountOpenOutput);
-
+      const overallouput = processingOutput + ' <break time="5s"/> ' +accountOpenOutput;
+      return this.emit(':tell', overallouput);
     }else if (intentObj.confirmationStatus == 'DENIED'){
       const speechOutput = 'No problem at all, will take through the process once again';
-      this.emit(':tell', speechOutput);
+      return this.emit(':tell', speechOutput);
     }  
   },
 
