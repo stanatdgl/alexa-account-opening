@@ -6,7 +6,7 @@ const instructions = 'Welcome to RBS Bank. <break strength="medium" /> my name i
 
 const accountOpenOutput = '<say-as interpret-as="interjection">Fantastic News </say-as>,'
 + '<break time="1s"/> We have offered you a rewards platinum account'
-+ 'and your sort code is 56-00-36 <break strength="medium" /> and your account number is 612323'
++ 'and your sort code is 56-00-36 <break strength="medium" /> and your account number is 6-1-2-3-2-3'
 + '<break strength="medium" /> Thank you for banking with us. You can start using our other digital services. Thank you';
 
 const processingOutput = 'Thanks for sharing your details, <break strength="medium"/>'
@@ -34,7 +34,7 @@ const handlers = {
        const speechOutput = 'Please wait, I am retriving your details <break time="2s"/> Here are your details <break time="1s"/> '
         + 'your first name is Stan and last name is prabu, <break time="1s"/> '
         + 'your post code number is S6 7JH <break time="2s"/> and '
-        + 'your contact number is 071234567890, <break time="2s"/> are these details correct?';      
+        + 'your contact number is 7-1-2-3-4-5-6-7-8-9, <break time="2s"/> are these details correct?';      
       const repromptSpeech = speechOutput;
       return this.emit(':confirmIntent', speechOutput, repromptSpeech, intentObj);
    }else if(intentObj.confirmationStatus == 'DENIED'){
@@ -53,7 +53,7 @@ const handlers = {
         return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }else {
       const speechOutput = 'Here are your details, your first name is Stan and last name is prabu, <break strength="medium"/> ' 
-      + 'your post code number is S6 7JH, your contact number is 071234567890, ' 
+      + 'your post code number is S6 7JH, your contact number is 7-1-2-3-4-5-6-7-8-9, ' 
       + 'Your driving lincense number is ' + slots.DrivingLincense.value;
       const overallouput = speechOutput + ' <break time="3s"/> '+ processingOutput + ' <break time="5s"/> ' +accountOpenOutput;
       return this.emit(':tell', overallouput);
