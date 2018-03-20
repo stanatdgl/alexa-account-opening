@@ -1,12 +1,12 @@
 const alexaSDK = require('alexa-sdk');
 const appId = 'amzn1.ask.skill.24ce7bd1-8bba-4044-be9c-52f689022022'; 
-const instructions = 'Welcome to R B S Bank. <break strength="medium" /> my name is lucy, your voice assistant. '
-+ 'I can help you to create Foundation and Rewards Account.' 
+const instructions = 'Welcome to R B S Bank <break strength="medium" /> my name is lucy, your voice assistant <break strength="medium" />'
++ 'I can help you to create Foundation and Rewards Account <break strength="medium" />' 
 + 'Can I use your amazon account details for this process ? Or you can share your details ?';
 
 const accountOpenOutput = '<say-as interpret-as="interjection">Fantastic News </say-as>,'
-+ '<break time="1s"/> We have offered you a rewards platinum account'
-+ 'and your sort code is 56 00 36, and your account number is 6 1 2 3 2 3.'
++ '<break time="1s"/> We have offered you a rewards platinum account.'
++ 'your sort code is 56 00 36, and your account number is 6 1 2 3 2 3.'
 + 'You can now start using our other digital services. Thank you for banking with us.';
 
 const processingOutput = 'Thanks for sharing your details, <break strength="medium"/>'
@@ -31,8 +31,8 @@ const handlers = {
     const intentObj = this.event.request.intent;
 
    if (intentObj.confirmationStatus == 'NONE') {
-       const speechOutput = 'Please wait while I am retriving your details <break time="2s"/> Here are your details. '
-        + 'your first name is Stan and your last name is prabu. '
+       const speechOutput = 'Please wait while I am retriving your details <break time="2s"/> Here are your details.'
+        + 'your first name is Stan, your last name is prabu, '
         + 'your post code number is S6 7JH and'
         + 'your contact number is 7 1 2 3 4 5 6 7 8 9, <break time="2s"/> are these details correct?';      
       const repromptSpeech = speechOutput;
