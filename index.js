@@ -1,13 +1,13 @@
 const alexaSDK = require('alexa-sdk');
 const appId = 'amzn1.ask.skill.24ce7bd1-8bba-4044-be9c-52f689022022'; 
-const instructions = 'Welcome to RBS Bank. <break strength="medium" /> my name is lucy, a voice assistant '
-+ 'I can help you to create Foundation and Rewards Account, <break strength="medium" />' 
-+ 'Can I use your amazon account details for this process <break strength="medium" /> or you can share your details';
+const instructions = 'Welcome to R B S Bank. <break strength="medium" /> my name is lucy, your voice assistant. '
++ 'I can help you to create Foundation and Rewards Account.' 
++ 'Can I use your amazon account details for this process ? Or you can share your details ?';
 
 const accountOpenOutput = '<say-as interpret-as="interjection">Fantastic News </say-as>,'
 + '<break time="1s"/> We have offered you a rewards platinum account'
-+ 'and your sort code is 56-00-36 <break strength="medium" /> and your account number is 6-1-2-3-2-3'
-+ '<break strength="medium" /> Thank you for banking with us. You can start using our other digital services. Thank you';
++ 'and your sort code is 56 00 36, and your account number is 6 1 2 3 2 3.'
++ 'You can now start using our other digital services. Thank you for banking with us.';
 
 const processingOutput = 'Thanks for sharing your details, <break strength="medium"/>'
 + 'please give me a moment. I am processing your application. <break strength="strong" />';
@@ -31,10 +31,10 @@ const handlers = {
     const intentObj = this.event.request.intent;
 
    if (intentObj.confirmationStatus == 'NONE') {
-       const speechOutput = 'Please wait, I am retriving your details <break time="2s"/> Here are your details <break time="1s"/> '
-        + 'your first name is Stan and last name is prabu, <break time="1s"/> '
-        + 'your post code number is S6 7JH <break time="2s"/> and '
-        + 'your contact number is 7-1-2-3-4-5-6-7-8-9, <break time="2s"/> are these details correct?';      
+       const speechOutput = 'Please wait while I am retriving your details <break time="2s"/> Here are your details. '
+        + 'your first name is Stan and your last name is prabu. '
+        + 'your post code number is S6 7JH and'
+        + 'your contact number is 7 1 2 3 4 5 6 7 8 9, <break time="2s"/> are these details correct?';      
       const repromptSpeech = speechOutput;
       return this.emit(':confirmIntent', speechOutput, repromptSpeech, intentObj);
    }else if(intentObj.confirmationStatus == 'DENIED'){
@@ -52,7 +52,7 @@ const handlers = {
         const repromptSpeech = 'Sorry, I didnt catch quiet correctly, can you please repeat once again?';
         return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }else {
-      const speechOutput = 'Here are your details, your first name is Stan and last name is prabu, <break strength="medium"/> ' 
+      const speechOutput = 'Here are your details, your first name is Stan and last name is prabu, ' 
       + 'your post code number is S6 7JH, your contact number is 7-1-2-3-4-5-6-7-8-9, ' 
       + 'Your driving lincense number is ' + slots.DrivingLincense.value;
       const overallouput = speechOutput + ' <break time="3s"/> '+ processingOutput + ' <break time="5s"/> ' +accountOpenOutput;
@@ -117,9 +117,9 @@ const handlers = {
   
     if (intentObj.confirmationStatus == 'NONE') {
       const speechOutput = 'Please verify your details before I proceed to process your inputs <break strength="medium" /> '
-        + 'Your first name is ' + slots.FirstName.value + ' Your last name is ' + slots.LastName.value
-        + 'Your contact number is ' + slots.ContactNumber.value + ' Your post code number is ' + slots.PostCode.value 
-        + 'Your driving lincense number is ' + slots.DrivingLincense.value +' are these details correct?';
+        + 'Your first name is ' + slots.FirstName.value + ', Your last name is ' + slots.LastName.value
+        + ', Your contact number is ' + slots.ContactNumber.value + ', Your post code number is ' + slots.PostCode.value 
+        + ', and Your driving lincense number is ' + slots.DrivingLincense.value +'. Are these details correct?';
       const repromptSpeech = speechOutput;
       return this.emit(':confirmIntent', speechOutput, repromptSpeech, intentObj);
     }else if(intentObj.confirmationStatus == 'CONFIRMED'){
